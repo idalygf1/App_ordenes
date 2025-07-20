@@ -1,0 +1,15 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar salida de compilación
+dist/
+build/
+
+# Editor settings
+.vscode/
+.env
