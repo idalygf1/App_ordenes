@@ -3,6 +3,7 @@ import { Table, Input, Button } from 'antd';
 import axios from 'axios';
 import AddOrderModal from './AddOrderModal';
 import EditOrderModal from './EditOrderModal';
+import DelOrderModal from './DelOrderModal';
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
@@ -10,6 +11,8 @@ const OrderTable = () => {
   const [editingOrder, setEditingOrder] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -32,64 +35,88 @@ const OrderTable = () => {
 
   const columns = [
     {
-      title: 'Productos',
+      title: <span className="text-gray-800 font-semibold">Productos</span>,
       key: 'productos',
       render: (_: any, record: any) =>
         record.products?.map((item: any) => item.productId?.name || 'Producto').join(', ') || '',
     },
     {
-      title: 'Cantidad',
+      title: <span className="text-gray-800 font-semibold">Cantidad</span>,
       key: 'cantidad',
       render: (_: any, record: any) =>
         record.products?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0,
     },
     {
-      title: 'Estado',
+      title: <span className="text-gray-800 font-semibold">Estado</span>,
       dataIndex: 'status',
       key: 'status',
     },
     {
-      title: 'Fecha',
+      title: <span className="text-gray-800 font-semibold">Fecha</span>,
       dataIndex: 'createDate',
       key: 'createDate',
       render: (text: string) => (text ? new Date(text).toLocaleString() : 'Sin fecha'),
     },
     {
-      title: 'Acciones',
+      title: <span className="text-gray-800 font-semibold">Acciones</span>,
       key: 'acciones',
       render: (_: any, record: any) => (
-        <Button onClick={() => {
-          setEditingOrder(record);
-          setEditModalVisible(true);
-        }}>
-          Editar
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="link"
+            className="text-blue-500 hover:text-blue-600"
+            onClick={() => {
+              setEditingOrder(record);
+              setEditModalVisible(true);
+            }}
+          >
+            Editar
+          </Button>
+          <Button
+            type="link"
+            danger
+            onClick={() => {
+              setOrderToDelete(record);
+              setDeleteModalVisible(true);
+            }}
+          >
+            Eliminar
+          </Button>
+        </div>
       ),
     },
   ];
 
   return (
-    <div style={{ padding: 20 }}>
-      <Input.Search
-        placeholder="Buscar por producto"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ width: 300, marginBottom: 16 }}
-      />
-      <Button
-        type="primary"
-        onClick={() => setAddModalVisible(true)}
-        style={{ float: 'right', marginBottom: 16 }}
-      >
-        Agregar orden
-      </Button>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-2xl p-6 border border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+          <Input
+            placeholder="Buscar por producto"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full sm:w-1/2 rounded-md"
+          />
+          <Button
+            type="primary"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md px-4 py-1"
+            onClick={() => setAddModalVisible(true)}
+          >
+            Agregar orden
+          </Button>
+        </div>
 
-      <Table
-        dataSource={filteredOrders}
-        columns={columns}
-        rowKey="_id"
-        pagination={false}
-      />
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+          <Table
+            dataSource={filteredOrders}
+            columns={columns}
+            rowKey="_id"
+            pagination={false}
+            className="text-gray-800"
+            bordered
+          />
+        </div>
+      </div>
 
       <EditOrderModal
         visible={editModalVisible}
@@ -102,6 +129,20 @@ const OrderTable = () => {
         visible={addModalVisible}
         onClose={() => setAddModalVisible(false)}
         onOrderAdded={fetchOrders}
+      />
+
+      <DelOrderModal
+        visible={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        onConfirm={async () => {
+          try {
+            await axios.delete(`http://localhost:3000/api/orders/${orderToDelete._id}`);
+            setDeleteModalVisible(false);
+            fetchOrders();
+          } catch (error) {
+            console.error('Error al eliminar la orden:', error);
+          }
+        }}
       />
     </div>
   );

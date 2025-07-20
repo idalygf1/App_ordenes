@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { FiUser, FiLock } from 'react-icons/fi';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,13 +16,8 @@ const Login = () => {
   const validateForm = () => {
     const errors: { username?: string; password?: string } = {};
 
-    if (!username.trim()) {
-      errors.username = 'El usuario es obligatorio';
-    }
-
-    if (!password.trim()) {
-      errors.password = 'La contraseña es obligatoria';
-    }
+    if (!username.trim()) errors.username = 'El usuario es obligatorio';
+    if (!password.trim()) errors.password = 'La contraseña es obligatoria';
 
     setFormErrors(errors as { username: string; password: string });
     return Object.keys(errors).length === 0;
@@ -29,7 +25,6 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
@@ -44,52 +39,55 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Error al iniciar sesión:', err);
-
-      // Mostrar mensaje específico si viene del backend
-      if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError('Error de conexión al servidor');
-      }
+      setError(err.response?.data?.message || 'Error de conexión al servidor');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Iniciar Sesión</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            className={`mb-1 w-full p-2 border rounded ${
-              formErrors.username ? 'border-red-500' : ''
-            }`}
-            type="text"
-            placeholder="Usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          {formErrors.username && (
-            <p className="text-red-500 text-sm mb-2">{formErrors.username}</p>
-          )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-blue-900 px-4">
+      <div className="bg-white p-10 rounded-xl shadow-xl w-full max-w-md border border-gray-200">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Iniciar Sesión
+        </h2>
 
-          <input
-            className={`mb-1 w-full p-2 border rounded ${
-              formErrors.password ? 'border-red-500' : ''
-            }`}
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {formErrors.password && (
-            <p className="text-red-500 text-sm mb-2">{formErrors.password}</p>
-          )}
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div className="relative">
+            <FiUser className="absolute top-3 left-3 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={`w-full pl-10 pr-4 py-2 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                formErrors.username ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {formErrors.username && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.username}</p>
+            )}
+          </div>
 
-          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <div className="relative">
+            <FiLock className="absolute top-3 left-3 text-gray-500" />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`w-full pl-10 pr-4 py-2 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                formErrors.password ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {formErrors.password && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>
+            )}
+          </div>
+
+          {error && <p className="text-red-600 text-center">{error}</p>}
 
           <button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition"
             type="submit"
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-md transition duration-300 shadow-sm"
           >
             Ingresar
           </button>
