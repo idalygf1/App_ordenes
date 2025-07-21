@@ -1,10 +1,7 @@
-# Output build
-dist/       # ⬅️ Asegúrate de tener esta línea si no quieres subir el build
-
 # Node
 node_modules/
 .env
-build/
+dist/
 
 # Logs
 npm-debug.log*
