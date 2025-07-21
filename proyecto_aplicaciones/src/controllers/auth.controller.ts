@@ -184,7 +184,8 @@ export const deleteUser = async (req: Request, res: Response) => {
     console.error("Error al eliminar usuario:", error);
     res.status(500).json({
       message: "Error al eliminar usuario",
-      error: error.message || error,
+      error: error instanceof Error ? error.message : String(error),
+
     });
   }
 };
