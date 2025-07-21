@@ -43,7 +43,7 @@ const EditOrderModal: React.FC<EditOrderModalProps> = ({
 
       setLoading(true);
 
-      await axios.patch(`http://localhost:3000/api/orders/${order._id}`, {
+      await axios.patch(`https://appordenes-production.up.railway.app/api/orders/${order._id}`, {
         products: [
           {
             productId: productoId,

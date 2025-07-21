@@ -18,7 +18,7 @@ export default function ProductTable() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/products', {
+      const res = await axios.get('https://appordenes-production.up.railway.app/api/products', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(res.data.products);
@@ -29,7 +29,7 @@ export default function ProductTable() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/products/${productIdToDelete}`, {
+      await axios.delete(`https://appordenes-production.up.railway.app/api/products/${productIdToDelete}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       message.success('Producto eliminado exitosamente');

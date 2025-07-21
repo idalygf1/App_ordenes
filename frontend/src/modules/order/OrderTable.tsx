@@ -16,7 +16,7 @@ const OrderTable = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/orders');
+      const res = await axios.get('https://appordenes-production.up.railway.app/api/orders');
       setOrders(res.data.orders || []);
     } catch (error) {
       console.error('Error al cargar órdenes:', error);
@@ -136,7 +136,7 @@ const OrderTable = () => {
         onClose={() => setDeleteModalVisible(false)}
         onConfirm={async () => {
           try {
-            await axios.delete(`http://localhost:3000/api/orders/${orderToDelete._id}`);
+            await axios.delete(`https://appordenes-production.up.railway.app/api/orders/${orderToDelete._id}`);
             setDeleteModalVisible(false);
             fetchOrders();
           } catch (error) {

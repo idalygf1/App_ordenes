@@ -14,7 +14,7 @@ const AddOrderModal = ({ visible, onClose, onOrderAdded }: any) => {
   useEffect(() => {
     if (visible) {
       axios
-        .get('http://localhost:3000/api/products')
+        .get('https://appordenes-production.up.railway.app/api/products')
         .then(res => setProducts(res.data.products || []))
         .catch(err => {
           console.error('❌ Error al cargar productos', err);
@@ -79,7 +79,7 @@ const AddOrderModal = ({ visible, onClose, onOrderAdded }: any) => {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:3000/api/orders', orderData);
+      await axios.post('https://appordenes-production.up.railway.app/api/orders', orderData);
 
       message.success('Orden creada correctamente');
       onOrderAdded();

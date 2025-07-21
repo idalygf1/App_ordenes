@@ -12,7 +12,7 @@ function MenuDynamic() {
   const { setToken } = useAuth();
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/menu')
+    axios.get('https://appordenes-production.up.railway.app/api/menu')
       .then(res => setMenuItems(res.data))
       .catch(err => console.error('Error al cargar menú:', err));
   }, []);

@@ -51,7 +51,7 @@ const AddUserModal = ({ visible, onClose, onUserAdded }) => {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/users', {
+      const res = await axios.post('https://appordenes-production.up.railway.app/api/auth/users', {
         name,
         username,
         email,

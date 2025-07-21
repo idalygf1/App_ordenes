@@ -62,7 +62,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 
     setLoading(true);
     try {
-      const res = await axios.patch(`http://localhost:3000/api/products/${product._id}`, {
+      const res = await axios.patch(`https://appordenes-production.up.railway.app/api/products/${product._id}`, {
         name,
         description,
         price,

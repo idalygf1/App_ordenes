@@ -40,7 +40,7 @@ const AddProductModal = ({ visible, onClose, onProductAdded }) => {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:3000/api/products', {
+      await axios.post('https://appordenes-production.up.railway.app/api/products', {
         name,
         description,
         price: parseFloat(price),

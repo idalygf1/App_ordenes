@@ -40,7 +40,7 @@ const EditUserModal = ({ visible, onClose, user, token, onUpdate }) => {
 
     try {
       await axios.patch(
-        `http://localhost:3000/api/auth/users/${user._id}`,
+        `https://appordenes-production.up.railway.app/api/auth/users/${user._id}`,
         { name: nombre, email },
         { headers: { Authorization: `Bearer ${token}` } }
       );

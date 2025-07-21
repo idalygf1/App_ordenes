@@ -29,7 +29,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/auth/login',
+        'https://appordenes-production.up.railway.app/api/auth/login',
         { username, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

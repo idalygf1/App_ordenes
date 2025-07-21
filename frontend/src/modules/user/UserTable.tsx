@@ -19,7 +19,7 @@ export default function UserTable() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/auth/users', {
+      const res = await axios.get('https://appordenes-production.up.railway.app/api/auth/users', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data.userList);
@@ -30,7 +30,7 @@ export default function UserTable() {
 
   const handleDeleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/auth/users/${deletingUserId}`, {
+      await axios.delete(`https://appordenes-production.up.railway.app/api/auth/users/${deletingUserId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers();
